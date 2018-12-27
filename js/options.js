@@ -2,6 +2,7 @@ let reset = document.getElementById("clearRules");
 let save = document.getElementById("saveRules");
 let remove = document.getElementById("deleteString1");
 let add = document.getElementById("addRule");
+let cancel = document.getElementById("cancel");
 // let page = document.getElementById('buttonDiv');
 // const kButtonColors = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1', '#fff'];
 // function constructOptions(kButtonColors) {
@@ -26,6 +27,9 @@ chrome.storage.sync.get('rules', function (data) {
     // }
     let i = 1;
     for (let key in savedRules) {
+        if (i > 1) {
+            buildFields();
+        }
         let rules = savedRules[key];
         document.getElementById('string' + i).value = rules.join("|");
         document.getElementById('replace' + i).value = key;
@@ -44,12 +48,18 @@ reset.addEventListener('click', function() {
 
 save.addEventListener('click', function() {
     let objectResponse = {};
-    let string1 = document.getElementById("string1").value;
-    let stringArray = string1.split('|');
-    let set = new Set(stringArray);
-    let replace1 = document.getElementById("replace1").value;
-    // let val = { replace1: string1 };
-    objectResponse[replace1] = [...set];
+
+    let rules = document.getElementsByClassName('rule');
+    for (var rule of rules) {
+        var elements = getStringsReplace(rule);
+        // let string1 = rule.getElementById("string1").value;
+        let stringArray = elements.string.value.split('|');
+        let set = new Set(stringArray);
+        // let replace1 = rule.getElementById("replace1").value;
+        // let val = { replace1: string1 };
+        objectResponse[elements.replace.value] = [...set];
+    }
+
     chrome.storage.sync.set({rules: objectResponse});
     location.reload();
     console.log(objectResponse);
@@ -72,13 +82,32 @@ add.addEventListener('click', function() {
     buildFields();
 })
 
+cancel.addEventListener('click', () => {
+    location.reload();
+})
+
 function buildFields() {
-    let rule = document.getElementsByClassName('rule')[0];
+    let rules = document.getElementsByClassName('rule');
+    let rule = rules[0];
     var container = document.getElementsByClassName('container')[0];
     var newRule = rule.cloneNode(true);
 
+    // var string = newRule.getElementsByClassName('strings')[0];
+    // var replace = newRule.getElementsByClassName('replace')[0];
+    var elements = getStringsReplace(newRule);
+
+    elements.string.id = 'string' + (rules.length + 1);
+    elements.replace.id = 'replace' + (rules.length +1);
+    elements.string.value = '';
+    elements.replace.value = '';
     // var groups = newRule.getElementsByClassName('form-group');
 
 
     container.appendChild(newRule);
+}
+
+function getStringsReplace(element) {
+    var string = element.getElementsByClassName('strings')[0];
+    var replace = element.getElementsByClassName('replace')[0];
+    return {string: string, replace: replace}
 }
