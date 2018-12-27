@@ -15,13 +15,17 @@ chrome.storage.sync.get('state', function (data) {
 
 enable.onclick = function (element) {
     chrome.storage.sync.set({'state': true}, function() {
-        alert('Refresh page to activate.');
+        chrome.runtime.sendMessage({state: true});
+        window.close();
+        // alert('Refresh page to activate.');
     });
 };
 
 disable.onclick = function (element) {
     chrome.storage.sync.set({ 'state': false }, function () {
-        alert('Refresh page to disable.');
+        chrome.runtime.sendMessage({ state: false });
+        window.close();
+        // alert('Refresh page to disable.');
     });
 };
 

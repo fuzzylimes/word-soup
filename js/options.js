@@ -23,6 +23,7 @@ chrome.storage.sync.get('rules', function (data) {
 clear.addEventListener('click', function() {
     if (confirm('Warning: This will permanently delete all of your saved filters.\nDo you wish to continue?')) {
         chrome.storage.sync.set({ state: false, rules: {} });
+        chrome.runtime.sendMessage({ state: false });
         location.reload();
     } else {
         // Do nothing!
@@ -40,7 +41,8 @@ save.addEventListener('click', function() {
         objectResponse[elements.replace.value] = [...set];
     }
 
-    chrome.storage.sync.set({rules: objectResponse});
+    chrome.storage.sync.set({state: true, rules: objectResponse});
+    chrome.runtime.sendMessage({ state: true });
     location.reload();
     console.log(objectResponse);
 })
