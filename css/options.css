@@ -3,7 +3,7 @@
     margin-bottom: 4vh;
 }
 
-.delete {
+.delete-btn {
   min-height: 20vh; /* These two lines are counted as one :-)       */
 
   display: flex;
