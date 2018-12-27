@@ -69,10 +69,10 @@ remove.addEventListener('click', function(element) {
 })
 
 add.addEventListener('click', function() {
-    let rules = 
+    buildFields();
 })
 
-function buildFields(params) {
+function buildFields() {
     let rule = document.getElementsByClassName('rule')[0];
     var container = document.getElementsByClassName('container')[0];
     var newRule = rule.cloneNode(true);
