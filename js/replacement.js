@@ -1,3 +1,9 @@
+/*
+    Author: fuzzylimes
+    Created: 12/27/2018
+    Last: 12/27/2018
+*/
+
 var elements = document.getElementsByTagName('*');
 
 chrome.storage.sync.get('state', function(data) {

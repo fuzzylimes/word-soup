@@ -1,3 +1,9 @@
+/*
+    Author: fuzzylimes
+    Created: 12/27/2018
+    Last: 12/27/2018
+*/
+
 chrome.browserAction.setBadgeText({ 'text': '?' });
 chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
 

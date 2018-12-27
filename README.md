@@ -1,1 +1,1 @@
-This is a dummy read me file. You should really replace the text that's in here :D
+*Word Soup* is a word substituion extension for chrome. I had found several examples of text replacers online, but all of them were hardcoded/requried editing source to define substitution. This extension allows you to define your own filters however you want.

@@ -1,3 +1,9 @@
+/*
+    Author: fuzzylimes
+    Created: 12/27/2018
+    Last: 12/27/2018
+*/
+
 let enable = document.getElementById('enable');
 let disable = document.getElementById('disable');
 let state = document.getElementById('state');
