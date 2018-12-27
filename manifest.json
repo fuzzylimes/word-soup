@@ -19,6 +19,18 @@
             "128": "img/large.jpg"
         }
     },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "js": [
+                "js/replacement.js"
+            ],
+            "run_at": "document_end"
+        }
+    ],
     "icons": {
         "128": "img/large.jpg"
     },

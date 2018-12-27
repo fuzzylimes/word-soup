@@ -4,8 +4,5 @@
 }
 
 .delete-btn {
-  min-height: 20vh; /* These two lines are counted as one :-)       */
-
-  display: flex;
-  align-items: center;
+  margin-top: 10vh;
 }
