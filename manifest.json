@@ -1,7 +1,7 @@
 {
     "name": "Word Soup",
-    "version": "0.1",
-    "description": "An extension that does nothing!",
+    "version": "0.2",
+    "description": "An extension that replaces words/phrases in any webpage.",
     "permissions": [
         "activeTab",
         "declarativeContent",

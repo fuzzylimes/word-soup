@@ -10,14 +10,15 @@ let remove = document.getElementsByClassName("delete");
 let add = document.getElementById("addRule");
 let cancel = document.getElementById("cancel");
 
-
+// On options screen load, data fill existing rules
 chrome.storage.sync.get('rules', function (data) {
     let savedRules = data['rules'];
-    console.log(savedRules);
     let i = 1;
     for (let key in savedRules) {
         if (i > 1) {
             buildFields();
+        } else {
+            createEventListeners(remove[0]);
         }
         let rules = savedRules[key];
         document.getElementById('string' + i).value = rules.join("|");
@@ -26,6 +27,7 @@ chrome.storage.sync.get('rules', function (data) {
     }
 });
 
+// Handle deleting all rules button click
 clear.addEventListener('click', function() {
     if (confirm('Warning: This will permanently delete all of your saved filters.\nDo you wish to continue?')) {
         chrome.storage.sync.set({ state: false, rules: {} });
@@ -36,6 +38,7 @@ clear.addEventListener('click', function() {
     }
 })
 
+// Handle Apply/Save button click
 save.addEventListener('click', function() {
     let objectResponse = {};
 
@@ -50,21 +53,19 @@ save.addEventListener('click', function() {
     chrome.storage.sync.set({state: true, rules: objectResponse});
     chrome.runtime.sendMessage({ state: true });
     location.reload();
-    console.log(objectResponse);
 })
 
-for (let butt of remove) {
-    createEventListeners(butt);
-};
-
+// Handle adding a new filter to options screen
 add.addEventListener('click', function() {
     buildFields();
 })
 
-cancel.addEventListener('click', () => {
+// Handle cancel changes
+cancel.addEventListener('click', function() {
     location.reload();
 })
 
+// Builds the new filter and adds it to the DOM
 function buildFields() {
     let rules = document.getElementsByClassName('rule');
     let rule = rules[0];
@@ -75,25 +76,27 @@ function buildFields() {
 
     elements.string.id = 'string' + (rules.length + 1);
     elements.replace.id = 'replace' + (rules.length +1);
-    elements.string.value = '';
-    elements.replace.value = '';
+    clearFields(elements)
 
     container.appendChild(newRule);
     createEventListeners(newRule.getElementsByClassName('delete')[0]);
-    console.log(remove);
 }
 
+// Finds the strings and replace classes inside the current element.
+// Returns object with reference to both locations.
 function getStringsReplace(element) {
     var string = element.getElementsByClassName('strings')[0];
     var replace = element.getElementsByClassName('replace')[0];
     return {string: string, replace: replace}
 }
 
+// Set the field values to null
 function clearFields(elements) {
     elements.string.value = '';
     elements.replace.value = '';
 }
 
+// Creates the event listener for the rule specific delete buttons
 function createEventListeners(button) {
     button.addEventListener('click', function (element) {
         let rules = document.getElementsByClassName('rule');

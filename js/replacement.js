@@ -11,7 +11,6 @@ chrome.storage.sync.get('state', function(data) {
         chrome.storage.sync.get('rules', function (data) {
             let savedRules = data['rules'];
             let replacements = buildReplacements(savedRules);
-            console.log(savedRules);
             
             for (var i = 0; i < elements.length; i++) {
                 var element = elements[i];
@@ -27,7 +26,6 @@ chrome.storage.sync.get('state', function(data) {
                         }
         
                         if (replacedText !== text) {
-                            console.log('replaced');
                             element.replaceChild(document.createTextNode(replacedText), node);
                         }
                     }
@@ -43,7 +41,6 @@ function buildReplacements(rules) {
     for (var key in rules) {
         replacements.push([key, buildRegex(rules[key])])
     }
-    console.log(replacements);
     return replacements;
 }
 

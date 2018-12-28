@@ -1,24 +1,49 @@
 /*
-    Author: fuzzylimes
-    Created: 12/27/2018
-    Last: 12/27/2018
+Author: fuzzylimes
+Created: 12/27/2018
+Last: 12/27/2018
 */
 
-chrome.browserAction.setBadgeText({ 'text': '?' });
-chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
+const PURPLE = '#6B459A';
+const GRAY = '#777';
+
+function turnOn() {
+    updateBadge('on', PURPLE);
+    reload();
+}
+
+function turnOff() {
+    updateBadge('off', GRAY);
+    reload();
+}
+
+function updateBadge(text, color) {
+    chrome.browserAction.setBadgeText({ 'text': text });
+    chrome.browserAction.setBadgeBackgroundColor({ 'color': color });
+}
+
+// Reload the current tab
+function reload() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.reload(tabs[0].id);
+    });
+}
+
+// Set badge on startup
+updateBadge('?', GRAY);
 
 // Check whether new version is installed
 chrome.runtime.onInstalled.addListener(function (details) {
     if (details.reason == "install") {
-        chrome.storage.sync.set({ 'state': false, 'rules': {'test': 'Testing'} });
-        chrome.browserAction.setBadgeText({ 'text': 'off' });
-        chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
+        chrome.storage.sync.set({ 'state': false, 'rules': {} });
+        turnOff();
     } else if (details.reason == "update") {
         var thisVersion = chrome.runtime.getManifest().version;
         console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
     }
 });
 
+// Handle current state on startup
 chrome.runtime.onStartup.addListener(function() {
     chrome.storage.sync.get('state', (data) => {
         let state = data['state'];
@@ -30,6 +55,7 @@ chrome.runtime.onStartup.addListener(function() {
     })
 })
 
+// Handle events from popup
 chrome.runtime.onMessage.addListener(function(request, sender) {
     if(request.state) {
         turnOn();
@@ -37,21 +63,3 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
         turnOff();
     }
 });
-
-function turnOn() {
-    chrome.browserAction.setBadgeText({ 'text': 'on' });
-    chrome.browserAction.setBadgeBackgroundColor({ 'color': '#6B459A' });
-    reload();
-}
-
-function turnOff() {
-    chrome.browserAction.setBadgeText({ 'text': 'off' });
-    chrome.browserAction.setBadgeBackgroundColor({ 'color': "#777" });
-    reload();
-}
-
-function reload() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.reload(tabs[0].id);
-    });
-}

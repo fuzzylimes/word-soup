@@ -11,30 +11,24 @@ let options = document.getElementById('options');
 
 chrome.storage.sync.get('state', function (data) {
     let currentState = data['state'];
-    if (currentState != true) {
-        state.innerHTML = "disabled.";
-    } else {
-        state.innerHTML = "enabled.";
-    }
-    // state.innerHTML = testing;
+    currentState ? state.innerHTML = "enabled." : state.innerHTML = "disabled.";
 });
 
-enable.onclick = function (element) {
-    chrome.storage.sync.set({'state': true}, function() {
-        chrome.runtime.sendMessage({state: true});
+function changeState(state) {
+    chrome.storage.sync.set({ 'state': state }, function () {
+        chrome.runtime.sendMessage({ state: state });
         window.close();
-        // alert('Refresh page to activate.');
     });
+}
+
+enable.onclick = function () {
+    changeState(true);
 };
 
-disable.onclick = function (element) {
-    chrome.storage.sync.set({ 'state': false }, function () {
-        chrome.runtime.sendMessage({ state: false });
-        window.close();
-        // alert('Refresh page to disable.');
-    });
+disable.onclick = function () {
+    changeState(false);
 };
 
-options.onclick = function() {
+options.onclick = function () {
     chrome.runtime.openOptionsPage();
 }
