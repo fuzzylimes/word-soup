@@ -6,9 +6,9 @@
 
 var elements = document.getElementsByTagName('*');
 
-chrome.storage.sync.get('state', function(data) {
+chrome.storage.local.get('state', function(data) {
     if (data['state']) {
-        chrome.storage.sync.get('rules', function (data) {
+        chrome.storage.local.get('rules', function (data) {
             let savedRules = data['rules'];
             let replacements = buildReplacements(savedRules);
             

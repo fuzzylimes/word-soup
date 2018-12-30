@@ -35,7 +35,7 @@ updateBadge('?', GRAY);
 // Check whether new version is installed
 chrome.runtime.onInstalled.addListener(function (details) {
     if (details.reason == "install") {
-        chrome.storage.sync.set({ 'state': false, 'rules': {} });
+        chrome.storage.local.set({ 'state': false, 'rules': {} });
         turnOff();
     } else if (details.reason == "update") {
         var thisVersion = chrome.runtime.getManifest().version;
@@ -45,7 +45,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
 
 // Handle current state on startup
 chrome.runtime.onStartup.addListener(function() {
-    chrome.storage.sync.get('state', (data) => {
+    chrome.storage.local.get('state', (data) => {
         let state = data['state'];
         if (state) {
             turnOn();

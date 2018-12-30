@@ -11,7 +11,7 @@ let add = document.getElementById("addRule");
 let cancel = document.getElementById("cancel");
 
 // On options screen load, data fill existing rules
-chrome.storage.sync.get('rules', function (data) {
+chrome.storage.local.get('rules', function (data) {
     let savedRules = data['rules'];
     let i = 1;
     for (let key in savedRules) {
@@ -30,7 +30,7 @@ chrome.storage.sync.get('rules', function (data) {
 // Handle deleting all rules button click
 clear.addEventListener('click', function() {
     if (confirm('Warning: This will permanently delete all of your saved filters.\nDo you wish to continue?')) {
-        chrome.storage.sync.set({ state: false, rules: {} });
+        chrome.storage.local.set({ state: false, rules: {} });
         chrome.runtime.sendMessage({ state: false });
         location.reload();
     } else {
@@ -50,7 +50,7 @@ save.addEventListener('click', function() {
         objectResponse[elements.replace.value] = [...set];
     }
 
-    chrome.storage.sync.set({state: true, rules: objectResponse});
+    chrome.storage.local.set({state: true, rules: objectResponse});
     chrome.runtime.sendMessage({ state: true });
     location.reload();
 })

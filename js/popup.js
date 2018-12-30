@@ -9,13 +9,13 @@ let disable = document.getElementById('disable');
 let state = document.getElementById('state');
 let options = document.getElementById('options');
 
-chrome.storage.sync.get('state', function (data) {
+chrome.storage.local.get('state', function (data) {
     let currentState = data['state'];
     currentState ? state.innerHTML = "enabled." : state.innerHTML = "disabled.";
 });
 
 function changeState(state) {
-    chrome.storage.sync.set({ 'state': state }, function () {
+    chrome.storage.local.set({ 'state': state }, function () {
         chrome.runtime.sendMessage({ state: state });
         window.close();
     });
